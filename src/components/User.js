@@ -36,6 +36,7 @@ constructor() {
 
   
 onBlur(event) {
+  console.log('event.target.value:' + event.target.value); 
 
   if (event.target.id === 'newUserName')
   {
@@ -164,7 +165,7 @@ userDelete = async (id) => {
       this.password = this.nuPassword;
       
    
-      this.login();
+       this.login();
       
       if (this.state.loginUserName !== null && this.state.loginUserName !== undefined )
       {
@@ -174,7 +175,6 @@ userDelete = async (id) => {
       else
       {
         this.registrationStatus = "FAILED";
-
       }
     }
 
@@ -190,9 +190,8 @@ render() {
         <div className="LoginUser">
         <h3>Login ..</h3>
 
-          <br></br>
-
           <TextField id="loginUserName" label="" placeholder="Login user name ..maccabi"  onBlur={this.onBlur}/>
+<br></br>
           <TextField id="password" label="password" type="password" placeholder="Password ..maccabi" onBlur={this.onBlur} />
           
           <br></br>
@@ -208,9 +207,8 @@ render() {
         <div className="NewUser">
       
           <TextField id="newUserName" label="New User Name" placeholder="New user name .." onBlur={this.onBlur}/>
-          
-          <TextField id="nuPassword" label="Password" type="password" placeholder="Password .." onBlur={this.onBlur}/>
           <br></br>
+          <TextField id="nuPassword" label="Password" type="password" placeholder="Password .." onBlur={this.onBlur}/>
           <br></br>
         
           <Button variant="contained" color="primary" onClick={this.onClick}>Register</Button>
