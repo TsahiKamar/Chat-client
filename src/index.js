@@ -7,29 +7,14 @@ import { Chat } from './components/Chat';
 
 //Redux
 import { Provider } from 'react-redux'
-import reducer from './reducer';
+import reducer from './store/reducer';
 import { createStore,combineReducers } from "redux";
 
-import { initializeUsers } from './reducer';
+import { initializeUsers } from './store/reducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import filterReducer from './filterReducer';
+import filterReducer from './store/filterReducer';
 
 export const store = createStore(reducer, composeWithDevTools())
-
- 
-
- fetch('/user/getUsers')
- .then(response => response.json())
- .then(data => {
-   store.dispatch(initializeUsers(data)) //INIT STORE DATA
-
- })
-  .catch((error) => {
-    console.log(error)
-});
-  
-const state = store.getState()
-console.log("index Store state:" + JSON.stringify(state)); 
 
 ReactDOM.render(
   <Provider store={store}>

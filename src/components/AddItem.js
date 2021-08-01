@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from '@material-ui/core/Button';
 
 import { useDispatch } from "react-redux";
-import { actionCreators } from "../actions";
+import { actionCreators } from "../store/actions";
 
 export default function AddItem() {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ export default function AddItem() {
     setInput("");
   };
 
-  const handleClear = () => {
+  const handleClear = () => {    
     dispatch(actionCreators.clearItems());
   };
 

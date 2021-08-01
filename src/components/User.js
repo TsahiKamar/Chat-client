@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
+import { connect } from "react-redux";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -21,13 +23,14 @@ newUserName = "";
 nuPassword ="";
 
 registrationStatus = null;
-
+//tr props
 constructor() {
     super();
+
     this.state = {
       name: "React-bootstrap key enter event",
       loginUserName:null,
-      users: []
+      items:[] 
     };
 
     this.onBlur = this.onBlur.bind(this);
@@ -63,12 +66,14 @@ onBlur(event) {
 
 //Chat users 
 loadUsers = () => {
- let users = [];
+  console.log('user getUsers..');
+
  fetch('/user/getUsers')
  .then(response => response.json())
  .then(data => {
-    this.setState({ users: data["users"] })
-    console.log('loadUsres state.data :' + JSON.stringify(this.state.users));
+    this.setState({ items: data.users })
+    
+    console.log('User loadUsers state.data :' + JSON.stringify(data.users));
   })
   .catch((error) => {
     console.log(error)
@@ -102,11 +107,11 @@ login = async () => {
                {
 
                console.log('login response data(userName)' + JSON.stringify(data));   
-               this.setState({ loginUserName: data })
+               this.setState({ loginUserName: data})
+               
                this.loginUserName = null;
                this.password = null;
                this.props.parentCallback(data);
-               //event.preventDefault();
                }
          
            })
@@ -123,7 +128,7 @@ login = async () => {
 }
 
 findIndex = (id) => {
-      return this.state.users.findIndex(item => {
+      return this.state.items.findIndex(item => {
         return item._id === id
       })
 }
@@ -135,8 +140,8 @@ userDelete = async (id) => {
 
       console.log('Delete user id :' + id)
       var index = this.findIndex(id);
-      this.state.users.splice(index, 1);
-      this.setState({ users: this.state.users })
+      this.state.items.splice(index, 1);
+      this.setState({ items: this.state.items })
 
     fetch('/user/deleteUser/' + id,{
       method: 'DELETE',
@@ -191,7 +196,7 @@ render() {
         <h3>Login ..</h3>
 
           <TextField id="loginUserName" label="" placeholder="Login user name ..maccabi"  onBlur={this.onBlur}/>
-<br></br>
+          <br></br>
           <TextField id="password" label="password" type="password" placeholder="Password ..maccabi" onBlur={this.onBlur} />
           
           <br></br>
@@ -226,4 +231,3 @@ render() {
 }
 
 }
-

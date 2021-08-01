@@ -1,24 +1,25 @@
 
 //Port 3000
+//npm start
 
-import { useState, useEffect } from "react";
 import Button from '@material-ui/core/Button';
-
 import React from 'react';
 import { ChannelList } from './ChannelList';
 import { User } from './User';
-//import { Users } from './Userso';
+import { Users } from './Users';
+import AddItem from  '../components/AddItem';
 
 //Redux
-import Users from './Users';
-import AddItem from  '../components/AddItem';
+import {store} from "../index";
+import { useState, useEffect } from "react";
+
 
 import './chat.scss';
 import { MessagesPanel } from './MessagesPanel';
 import socketClient from "socket.io-client";
 const SERVER = "http://127.0.0.1:8080";
 
-const CurrentUserContext = React.createContext('currentUser');
+const CurrentUserContext = React.createContext('currentUser');//Global
 
 export class Chat extends React.Component {
     
@@ -27,7 +28,7 @@ export class Chat extends React.Component {
         channels: null,
         socket: null,
         channel: null,
-        users:[],
+        items:[],
         currentUser:null,
         loginDisplay:{ display: "block",margin:'auto',width:'20%','maxWidth':'20%'},
         display: { display: "none" }
@@ -35,8 +36,10 @@ export class Chat extends React.Component {
     socket;
 
     componentDidMount() {
+        console.log('Chat componentDidMount'); 
         this.loadChannels();
         this.configureSocket();
+
     }
 
     configureSocket = () => {
@@ -81,16 +84,7 @@ export class Chat extends React.Component {
         })
     }
 
-    //Chat users 
-    loadUsers = async () => {
-            fetch('/user/getUsers').then(async response => { 
-                let data = await response.json();
-                console.log('getUsers users' + JSON.stringify(data.users));
-                this.setState({ users: data.users });
-            })
-    }
-    
-    
+
   
     handleNewUser = (newUserName, password) => {
          
@@ -111,12 +105,13 @@ export class Chat extends React.Component {
         this.socket.emit('send-message', { channel_id, text, senderName: this.state.currentUser, id: Date.now() });//senderName: this.socket.id
     }
 
-
-    handleCallback = (childData) =>{
-        this.setState({currentUser: childData})
-        this.setState({display: { display: "block",width:'60%',height:'40%'}})
-        this.setState({loginDisplay: { display: "none"}})
-    }
+    
+     handleCallback = (childData) =>{
+    
+         this.setState({currentUser: childData}) 
+         this.setState({display: { display: "block",width:'60%',height:'40%'}})
+         this.setState({loginDisplay: { display: "none"}})
+     }
 
     
     disconnect = () => {
@@ -141,13 +136,11 @@ export class Chat extends React.Component {
                 </div>
 
                 <div style={this.state.loginDisplay}>
-                <User onNewUser={this.handleNewUser} users={this.state.users} parentCallback = {this.handleCallback} />
+                <User onNewUser={this.handleNewUser} items={this.state.items} parentCallback={this.handleCallback} />
                 </div>
                 <div style={this.state.display} ><Users /></div>
-
-                
-                <AddItem />
-                
+ 
+               
             </div>
             </CurrentUserContext.Provider>
         );

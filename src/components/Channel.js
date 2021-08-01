@@ -7,8 +7,6 @@ export class Channel extends React.Component {
 
     click = () => {
         this.props.onClick(this.props.id);
-        this.channelColor =  {'background-color': 'green'}
-
     }
 
     render() {

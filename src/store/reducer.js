@@ -18,19 +18,29 @@ const initialState = {
  
   const removeItem = (array, action) => {
     return array.filter((item, index) => index !== action.payload);
+ 
   };
-  
   
   export default (state = initialState, action) => {
   
    switch (action.type) {
-    case 'NEW_NOTE':
+    case 'NEW_ITEM':
         return [...state, action.data]
+       
+        case "ADD_NEW_ITEM":
+          return {
+            ...state,
+            items:[...state.items,action.payload]
+          };
+      case "DELETE_ITEM":
+       return {
+          items: [...state.items.filter(item => item !== action.payload)]
+        };
       case "SET_INIT_LIST":
         return { 
           ...state, 
           items: [
-            action.data
+            action.data 
           ]
         };
       case "ADD_TO_LIST":
@@ -64,10 +74,10 @@ const initialState = {
     }
   };
 
-
-  export const initializeUsers = (items) => {
-    return {
-      type: 'SET_INIT_LIST',
-      data: items
-    }
-  }
+//ORIG
+   export const initializeUsers = (items) => {
+     return {
+       type: 'SET_INIT_LIST',
+       data: items
+     }
+   }
